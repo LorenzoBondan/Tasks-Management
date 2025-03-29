@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tasks_management/entities/task.dart';
 import 'package:tasks_management/services/comment_service.dart';
 import 'package:tasks_management/services/task_service.dart';
@@ -15,21 +16,26 @@ class TaskDetailsPage extends StatefulWidget {
 }
 
 class TaskDetailsPageState extends State<TaskDetailsPage> {
-  late TaskService service = TaskService();
-  late CommentService commentService = CommentService();
+  late TaskService service;
+  late CommentService commentService;
   late bool isCompleted;
 
   @override
   void initState() {
     super.initState();
     isCompleted = widget.task.isCompleted;
+    service = TaskService();
+    commentService = CommentService();
   }
 
   void _toggleCompletion() {
     setState(() {
       isCompleted = !isCompleted;
-      service.updateIsCompleted(widget.task.id);
     });
+
+    final taskService = Provider.of<TaskService>(context, listen: false);
+    taskService.updateIsCompleted(widget.task.id);
+    
     widget.onToggleCompletion();
   }
 
@@ -51,7 +57,7 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
 
             Row(
               children: [
-                Text('Status: ', style: const TextStyle(fontSize: 14)),
+                Text('Completed: ', style: const TextStyle(fontSize: 14)),
                 Switch(
                   value: isCompleted,
                   onChanged: (value) => _toggleCompletion(),
