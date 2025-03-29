@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tasks_management/entities/comment.dart';
 import 'package:tasks_management/entities/task.dart';
 import 'package:tasks_management/services/comment_service.dart';
 import 'package:tasks_management/services/task_service.dart';
@@ -21,13 +22,26 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
   late TaskService service;
   late CommentService commentService;
   late bool isCompleted;
+  late List<Comment> comments;
 
   @override
   void initState() {
     super.initState();
     isCompleted = widget.task.isCompleted;
-    service = TaskService();
-    commentService = CommentService();
+    service = Provider.of<TaskService>(context, listen: false);
+    commentService = Provider.of<CommentService>(context, listen: false);
+    _loadComments();
+  }
+
+  void _loadComments() {
+    setState(() {
+      comments = commentService.findByTaskId(widget.task.id);
+    });
+  }
+
+  void _deleteComment(int commentId) {
+    commentService.delete(commentId);
+    _loadComments();
   }
 
   void _toggleCompletion() {
@@ -101,7 +115,7 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
             const SizedBox(height: 20),
 
             Text('Comments', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            CommentListPage(comments: commentService.findByTaskId(widget.task.id)),
+            CommentListPage(comments: commentService.findByTaskId(widget.task.id), onDelete: _deleteComment),
             
             SizedBox(
               width: double.infinity, 

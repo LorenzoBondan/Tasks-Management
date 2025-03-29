@@ -14,6 +14,8 @@ class TaskFormPage extends StatefulWidget {
 }
 
 class _TaskFormPageState extends State<TaskFormPage> {
+  late TaskService service;
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -22,6 +24,7 @@ class _TaskFormPageState extends State<TaskFormPage> {
   @override
   void initState() {
     super.initState();
+    service = Provider.of<TaskService>(context, listen: false);
     
     if (widget.task != null) {
       _titleController.text = widget.task!.title;
@@ -32,8 +35,6 @@ class _TaskFormPageState extends State<TaskFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final service = Provider.of<TaskService>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(title: Text(widget.task == null ? 'Add Task' : 'Edit Task')),
       

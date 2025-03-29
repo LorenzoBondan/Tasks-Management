@@ -174,13 +174,13 @@ class _TaskListPageState extends State<TaskListPage> {
 
                 switch (item.priority.name) {
                   case 'low':
-                    priorityColor = const Color.fromARGB(255, 141, 192, 83);
+                    priorityColor = Colors.lightGreen;
                     break;
                   case 'normal':
-                    priorityColor = const Color.fromARGB(255, 215, 204, 105);
+                    priorityColor = const Color.fromARGB(255, 181, 174, 112);
                     break;
                   case 'high':
-                    priorityColor = const Color.fromARGB(255, 206, 112, 105);
+                    priorityColor = const Color.fromARGB(255, 194, 117, 112);
                     break;
                   default:
                     priorityColor = Colors.grey;
