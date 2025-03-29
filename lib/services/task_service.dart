@@ -22,6 +22,11 @@ class TaskService extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateIsCompleted(int taskId) {
+    repository.updateIsCompleted(taskId);
+    notifyListeners();
+  }
+
   void updatePriority(int taskId, Priority priority) {
     repository.updatePriority(taskId, priority);
     notifyListeners();
