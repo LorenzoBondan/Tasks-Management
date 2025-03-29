@@ -6,8 +6,9 @@ import 'package:tasks_management/view/comments/comment_form_page.dart';
 class CommentListPage extends StatelessWidget {
   final List<Comment> comments;
   final Function(int) onDelete;
+  final Function onEdit;
 
-  const CommentListPage({super.key, required this.comments, required this.onDelete});
+  const CommentListPage({super.key, required this.comments, required this.onDelete, required this.onEdit});
 
   void _confirmDelete(BuildContext context, int commentId) {
     showDialog(
@@ -53,7 +54,9 @@ class CommentListPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => CommentFormPage(comment: comment, taskId: comment.taskId)),
-                    );
+                    ).then((_) {
+                      onEdit(); 
+                    });
                   },
                 ),
                 IconButton(

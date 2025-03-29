@@ -4,6 +4,7 @@ import 'package:tasks_management/entities/comment.dart';
 import 'package:tasks_management/entities/task.dart';
 import 'package:tasks_management/services/comment_service.dart';
 import 'package:tasks_management/services/task_service.dart';
+import 'package:tasks_management/view/comments/comment_form_page.dart';
 import 'package:tasks_management/view/comments/comment_list_page.dart';
 import 'package:tasks_management/view/tasks/task_form_page.dart';
 import 'package:tasks_management/view/tasks/task_list_page.dart';
@@ -115,7 +116,21 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
             const SizedBox(height: 20),
 
             Text('Comments', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            CommentListPage(comments: commentService.findByTaskId(widget.task.id), onDelete: _deleteComment),
+            CommentListPage(comments: commentService.findByTaskId(widget.task.id), onDelete: _deleteComment, onEdit: _loadComments),
+            
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: FloatingActionButton(
+                child: const Icon(Icons.add),
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CommentFormPage(taskId: widget.task.id)),
+                  );
+                  _loadComments();
+                },
+              ),
+            ),
             
             SizedBox(
               width: double.infinity, 
