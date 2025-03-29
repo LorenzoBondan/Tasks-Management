@@ -88,39 +88,47 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Details: ${widget.task.title}')),
+      appBar: AppBar(
+        title: Text('Task Details', style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            Text(widget.task.title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(widget.task.title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
             const SizedBox(height: 10),
 
-            Text(widget.task.description, style: const TextStyle(fontSize: 14)),
+            Text(widget.task.description, style: const TextStyle(fontSize: 14, color: Colors.black87)),
             const SizedBox(height: 10),
 
-            Text('Priority: ${widget.task.priority.name}', style: const TextStyle(fontSize: 14)),
+            Text('Priority: ${widget.task.priority.name}', style: const TextStyle(fontSize: 14, color: Colors.black87)),
             const SizedBox(height: 10),
 
             Row(
               children: [
-                Text('Completed: ', style: const TextStyle(fontSize: 14)),
+                Text('Completed: ', style: const TextStyle(fontSize: 14, color: Colors.black87)),
                 Switch(
                   value: isCompleted,
                   onChanged: (value) => _toggleCompletion(),
+                  activeColor: Colors.deepPurple,
                 ),
               ],
             ),
             const SizedBox(height: 20),
 
-            Text('Comments', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text('Comments', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
             CommentListPage(comments: commentService.findByTaskId(widget.task.id), onDelete: _deleteComment, onEdit: _loadComments),
             
             Align(
               alignment: Alignment.bottomCenter,
               child: FloatingActionButton(
+                backgroundColor: Colors.deepPurple,
+                foregroundColor: Colors.white,
                 child: const Icon(Icons.add),
                 onPressed: () async {
                   await Navigator.push(
@@ -131,6 +139,7 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
                 },
               ),
             ),
+            const SizedBox(height: 40),
             
             SizedBox(
               width: double.infinity, 
@@ -141,8 +150,15 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                             
-                        ElevatedButton(
-                          child: const Text('Edit'),
+                        ElevatedButton.icon(
+                          icon: const Icon(Icons.edit),
+                          label: const Text('Edit'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                            foregroundColor: Colors.white,
+                            iconColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          ),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -150,17 +166,31 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
                             );
                           },
                         ),
-                        ElevatedButton(
-                          child: const Text('Delete'),
+
+                        ElevatedButton.icon(
+                          icon: const Icon(Icons.delete),
+                          label: const Text('Delete'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                            foregroundColor: Colors.white,
+                            iconColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          ),
                           onPressed: () {
                             _confirmDelete(context, widget.task.id);
                           },
                         ),
-                        ElevatedButton(
+                        ElevatedButton.icon(
+                          icon: const Icon(Icons.arrow_back),
+                          label: const Text('Back'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                            foregroundColor: Colors.white,
+                            iconColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          ),
                           onPressed: () => Navigator.pop(context),
-                          child: const Text('Back'),
                         ),
-
                     ],
                   ),
                 )

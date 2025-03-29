@@ -72,19 +72,28 @@ class _TaskListPageState extends State<TaskListPage> {
       .toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Tasks')),
+      appBar: AppBar(
+        title: const Text('Tasks Management', style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromARGB(255, 255, 255, 255))),
+        backgroundColor: Colors.deepPurple,
+        elevation: 5,
+      ),
       body: Column(
         children: [
-
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
                 labelText: 'Search Task',
-                prefixIcon: const Icon(Icons.search),
+                labelStyle: TextStyle(color: Colors.deepPurple),
+                prefixIcon: const Icon(Icons.search, color: Colors.deepPurple),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
+                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.deepPurple)),
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.deepPurple)),
+                hintText: 'Search...',
+                hintStyle: TextStyle(color: Colors.deepPurple.withValues(alpha: 0.6)),
               ),
+
               onChanged: (value) {
                 setState(() {
                   _searchQuery = value;
@@ -98,12 +107,12 @@ class _TaskListPageState extends State<TaskListPage> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
-                border: Border.all(color: Colors.grey, width: 1),
+                border: Border.all(color: Colors.deepPurple, width: 1),
               ),
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: DropdownButton<String>(
-                  hint: const Text("Select Priority"),
+                  hint: const Text("Select Priority", style: TextStyle(color: Colors.deepPurple)),
                   value: _selectedPriority,
                   isExpanded: true, 
                   items: [
@@ -113,7 +122,7 @@ class _TaskListPageState extends State<TaskListPage> {
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text(value, style: TextStyle(color: Colors.deepPurple)),
                     );
                   }).toList(),
                   onChanged: (newValue) {
@@ -131,12 +140,12 @@ class _TaskListPageState extends State<TaskListPage> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
-                border: Border.all(color: Colors.grey, width: 1),
+                border: Border.all(color: Colors.deepPurple, width: 1),
               ),
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: DropdownButton<String>(
-                  hint: const Text("Select Is Completed"),
+                  hint: const Text("Select Is Completed", style: TextStyle(color: Colors.deepPurple)),
                   value: _selectedIsCompleted,
                   isExpanded: true, 
                   items: [
@@ -144,7 +153,7 @@ class _TaskListPageState extends State<TaskListPage> {
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text(value, style: TextStyle(color: Colors.deepPurple)),
                     );
                   }).toList(),
                   onChanged: (newValue) {
@@ -157,13 +166,12 @@ class _TaskListPageState extends State<TaskListPage> {
             ),
           ),
           
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
+          ElevatedButton(
               onPressed: _clearFilters,
+              style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 173, 146, 216), foregroundColor: Colors.white),
               child: const Text("Clear Filters"),
             ),
-          ),
+          const SizedBox(height: 12),
 
           Expanded(
             child: ListView.builder(
@@ -174,13 +182,13 @@ class _TaskListPageState extends State<TaskListPage> {
 
                 switch (item.priority.name) {
                   case 'low':
-                    priorityColor = Colors.lightGreen;
+                    priorityColor = const Color.fromARGB(255, 198, 179, 230);
                     break;
                   case 'normal':
-                    priorityColor = const Color.fromARGB(255, 181, 174, 112);
+                    priorityColor = const Color.fromARGB(255, 129, 83, 209);
                     break;
                   case 'high':
-                    priorityColor = const Color.fromARGB(255, 194, 117, 112);
+                    priorityColor = const Color.fromARGB(255, 77, 19, 176);
                     break;
                   default:
                     priorityColor = Colors.grey;
@@ -206,14 +214,14 @@ class _TaskListPageState extends State<TaskListPage> {
                       },
                       child: Icon(
                         item.isCompleted ? Icons.check_circle : Icons.cancel,
-                        color: item.isCompleted ? Colors.green : Colors.red,
+                        color: item.isCompleted ? Colors.deepPurple : const Color.fromARGB(255, 151, 131, 187),
                       ),
                     ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.visibility, color: Colors.green),
+                          icon: const Icon(Icons.visibility, color: Color.fromARGB(255, 100, 100, 100)),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -227,7 +235,7 @@ class _TaskListPageState extends State<TaskListPage> {
                           },
                         ),
                         IconButton(
-                          icon: const Icon(Icons.edit),
+                          icon: const Icon(Icons.edit, color: Color.fromARGB(255, 100, 100, 100)),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -236,7 +244,7 @@ class _TaskListPageState extends State<TaskListPage> {
                           },
                         ),
                         IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.red),
+                          icon: const Icon(Icons.delete, color: Color.fromARGB(255, 100, 100, 100)),
                           onPressed: () => _confirmDelete(context, item.id),
                         ),
                       ],
@@ -249,6 +257,8 @@ class _TaskListPageState extends State<TaskListPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
         child: const Icon(Icons.add),
         onPressed: () {
           Navigator.push(

@@ -31,21 +31,29 @@ class _CommentFormPageState extends State<CommentFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.comment == null ? 'Add Comment' : 'Edit Comment')),
+      appBar: AppBar(
+        title: Text(widget.comment == null ? 'Add Comment' : 'Edit Comment'),
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
+      ),
       
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: [
-              
+
               TextFormField(
                 controller: _textController,
-                decoration: const InputDecoration(labelText: 'Text'),
+                decoration: InputDecoration(
+                  labelText: 'Text',
+                  labelStyle: TextStyle(color: Colors.deepPurple),
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) => value!.isEmpty ? 'Enter a Comment text' : null,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
 
               ElevatedButton(
                 onPressed: () {
@@ -62,11 +70,17 @@ class _CommentFormPageState extends State<CommentFormPage> {
                     Navigator.pop(context);
                   }
                 }, 
-                child: Text(widget.comment == null ? 'Create' : 'Update'),
+                
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.deepPurple,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                child: Text(widget.comment == null ? 'Create' : 'Update')
               ),
             ],
           ),
-
         ),
       ),
     );

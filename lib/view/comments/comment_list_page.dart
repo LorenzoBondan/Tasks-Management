@@ -49,7 +49,7 @@ class CommentListPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.edit),
+                  icon: const Icon(Icons.edit, color: Color.fromARGB(255, 100, 100, 100)),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -60,7 +60,7 @@ class CommentListPage extends StatelessWidget {
                   },
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.red),
+                  icon: const Icon(Icons.delete, color: Color.fromARGB(255, 100, 100, 100)),
                   onPressed: () => _confirmDelete(context, comment.id),
                 ),
               ],

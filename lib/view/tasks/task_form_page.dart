@@ -36,32 +36,48 @@ class _TaskFormPageState extends State<TaskFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.task == null ? 'Add Task' : 'Edit Task')),
+      appBar: AppBar(
+        title: Text(widget.task == null ? 'Add Task' : 'Edit Task'),
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
+      ),
       
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: [
-              
+
               TextFormField(
                 controller: _titleController,
-                decoration: const InputDecoration(labelText: 'Title'),
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  labelStyle: TextStyle(color: Colors.deepPurple),
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) => value!.isEmpty ? 'Enter a task title' : null,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
 
               TextFormField(
                 controller: _descriptionController,
-                decoration: const InputDecoration(labelText: 'Description'),
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  labelStyle: TextStyle(color: Colors.deepPurple),
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) => value!.isEmpty ? 'Enter a task description' : null,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
 
               DropdownButtonFormField<Priority>(
                 value: _selectedPriority,
-                decoration: const InputDecoration(labelText: 'Priority'),
+                decoration: InputDecoration(
+                  labelText: 'Priority',
+                  labelStyle: TextStyle(color: Colors.deepPurple),
+                  border: OutlineInputBorder(),
+                ),
                 items: Priority.values.map((priority) {
                   return DropdownMenuItem<Priority>(
                     value: priority,
@@ -75,7 +91,7 @@ class _TaskFormPageState extends State<TaskFormPage> {
                 },
                 validator: (value) => value == null ? 'Select a priority' : null,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
 
               ElevatedButton(
                 onPressed: () {
@@ -94,11 +110,17 @@ class _TaskFormPageState extends State<TaskFormPage> {
                     Navigator.pop(context);
                   }
                 }, 
+                
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepPurple,
+                  foregroundColor: Colors.white,  // DeepPurple color for button
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 child: Text(widget.task == null ? 'Create' : 'Update'),
               ),
             ],
           ),
-
         ),
       ),
     );
