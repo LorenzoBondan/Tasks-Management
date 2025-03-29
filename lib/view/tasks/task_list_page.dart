@@ -14,6 +14,7 @@ class TaskListPage extends StatefulWidget {
 class _TaskListPageState extends State<TaskListPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+  String? _selectedPriority;
 
   void _refreshTasks() {
     setState(() {});
@@ -44,17 +45,33 @@ class _TaskListPageState extends State<TaskListPage> {
     );
   }
 
+  void _clearFilters() {
+    setState(() {
+      _searchQuery = '';
+      _selectedPriority = null;
+      _searchController.clear();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final service = Provider.of<TaskService>(context);
+    
     final filteredTasks = service.findAll
-        .where((task) => task.title.toLowerCase().contains(_searchQuery.toLowerCase()))
-        .toList();
+      .where((task) {
+        bool matchesSearchQuery = task.title.toLowerCase().contains(_searchQuery.toLowerCase());
+
+        bool matchesPriority = _selectedPriority == null || task.priority.name == _selectedPriority;
+
+        return matchesSearchQuery && matchesPriority;
+      })
+      .toList();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Tasks')),
       body: Column(
         children: [
+
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -69,6 +86,47 @@ class _TaskListPageState extends State<TaskListPage> {
                   _searchQuery = value;
                 });
               },
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                border: Border.all(color: Colors.grey, width: 1),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: DropdownButton<String>(
+                  hint: const Text("Select Priority"),
+                  value: _selectedPriority,
+                  isExpanded: true, 
+                  items: [
+                    'low',
+                    'normal',
+                    'high',
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedPriority = newValue;
+                    });
+                  },
+                ),
+              ),
+            ),
+          ),
+          
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: _clearFilters,
+              child: const Text("Clear Filters"),
             ),
           ),
 
