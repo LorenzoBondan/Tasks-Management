@@ -1,12 +1,12 @@
-import 'package:flutter/scheduler.dart';
 import 'package:tasks_management/entities/comment.dart';
+import 'package:tasks_management/entities/priority.dart';
 
 class Task {
   final int id;
-  final String title;
-  final String description;
-  final Priority priority;
-  final bool isCompleted;
+  String title;
+  String description;
+  Priority priority;
+  bool isCompleted;
 
   final List<Comment> comments;
 
