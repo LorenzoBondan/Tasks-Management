@@ -57,7 +57,6 @@ class _TaskListPageState extends State<TaskListPage> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
@@ -71,61 +70,84 @@ class _TaskListPageState extends State<TaskListPage> {
                 });
               },
             ),
-
           ),
+
           Expanded(
             child: ListView.builder(
               itemCount: filteredTasks.length,
               itemBuilder: (context, index) {
                 final item = filteredTasks[index];
-                return ListTile(
-                  title: Text(item.title),
-                  subtitle: Text(item.description),
-                  leading: GestureDetector(
-                    onTap: () {
-                      final taskService = Provider.of<TaskService>(context, listen: false);
-                      taskService.updateIsCompleted(item.id); 
-                      setState(() {}); 
-                    },
-                    child: Icon(
-                      item.isCompleted ? Icons.check_circle : Icons.cancel,
-                      color: item.isCompleted ? Colors.green : Colors.red,
+                Color priorityColor;
+
+                switch (item.priority.name) {
+                  case 'low':
+                    priorityColor = Colors.green;
+                    break;
+                  case 'normal':
+                    priorityColor = Colors.yellow;
+                    break;
+                  case 'high':
+                    priorityColor = Colors.red;
+                    break;
+                  default:
+                    priorityColor = Colors.grey;
+                }
+
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                        color: priorityColor,
+                        width: 8,
+                      ),
                     ),
                   ),
-                  // add priority
-
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-
-                      IconButton(
-                        icon: const Icon(Icons.visibility, color: Colors.green),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TaskDetailsPage(task: item, onToggleCompletion: _refreshTasks),
-                            ),
-                          );
-                        },
+                  child: ListTile(
+                    title: Text(item.title),
+                    subtitle: Text(item.description),
+                    leading: GestureDetector(
+                      onTap: () {
+                        final taskService = Provider.of<TaskService>(context, listen: false);
+                        taskService.updateIsCompleted(item.id);
+                        setState(() {});
+                      },
+                      child: Icon(
+                        item.isCompleted ? Icons.check_circle : Icons.cancel,
+                        color: item.isCompleted ? Colors.green : Colors.red,
                       ),
-
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => TaskFormPage(task: item)),
-                          );
-                        },
-                      ),
-
-                      IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () => _confirmDelete(context, item.id),
-                      ),
-
-                    ],
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.visibility, color: Colors.green),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TaskDetailsPage(
+                                  task: item,
+                                  onToggleCompletion: _refreshTasks,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.edit),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => TaskFormPage(task: item)),
+                            );
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () => _confirmDelete(context, item.id),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
