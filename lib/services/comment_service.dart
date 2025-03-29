@@ -7,6 +7,10 @@ class CommentService extends ChangeNotifier {
 
   List<Comment> get findAll => repository.findAll; 
 
+  List<Comment> findByTaskId(int taskId) {
+    return repository.findByTaskId(taskId);
+  }
+
   Comment? findById(int id) {
     return repository.findById(id);
   }

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tasks_management/entities/task.dart';
 import 'package:tasks_management/services/comment_service.dart';
 import 'package:tasks_management/services/task_service.dart';
-import 'package:tasks_management/utils/formatters.dart';
+import 'package:tasks_management/view/comments/comment_list_page.dart';
 import 'package:tasks_management/view/tasks/task_form_page.dart';
 import 'package:tasks_management/view/tasks/task_list_page.dart';
 
@@ -101,18 +101,7 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
             const SizedBox(height: 20),
 
             Text('Comments', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            Expanded(
-              child: ListView.builder(
-                itemCount: widget.task.comments.length,
-                itemBuilder: (context, index) {
-                  final item = widget.task.comments[index];
-                  return ListTile(
-                    title: Text(item.text, style: const TextStyle(fontSize: 14)),
-                    subtitle: Text(formatDate(item.moment), style: const TextStyle(fontSize: 12)),
-                  );
-                },
-              ),
-            ),
+            CommentListPage(comments: commentService.findByTaskId(widget.task.id)),
             
             SizedBox(
               width: double.infinity, 

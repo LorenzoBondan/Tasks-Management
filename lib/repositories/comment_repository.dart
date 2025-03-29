@@ -8,6 +8,10 @@ class CommentRepository {
 
   List<Comment> get findAll => list;
 
+  List<Comment> findByTaskId(int taskId) {
+    return list.where((obj) => obj.taskId == taskId).toList();
+  }
+
   Comment? findById(int id) {
     return list.firstWhere((obj) => obj.id == id, orElse: () => Comment(id: 0, taskId: 0, text: '', moment: DateTime.now()));
   }
