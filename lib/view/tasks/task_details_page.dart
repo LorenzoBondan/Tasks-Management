@@ -4,6 +4,8 @@ import 'package:tasks_management/entities/task.dart';
 import 'package:tasks_management/services/comment_service.dart';
 import 'package:tasks_management/services/task_service.dart';
 import 'package:tasks_management/utils/formatters.dart';
+import 'package:tasks_management/view/tasks/task_form_page.dart';
+import 'package:tasks_management/view/tasks/task_list_page.dart';
 
 class TaskDetailsPage extends StatefulWidget {
   final Task task;
@@ -35,8 +37,37 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
 
     final taskService = Provider.of<TaskService>(context, listen: false);
     taskService.updateIsCompleted(widget.task.id);
-    
+
     widget.onToggleCompletion();
+  }
+
+  void _confirmDelete(BuildContext context, int taskId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text("Confirm Deletion"),
+          content: const Text("Are you sure you want to delete this Task?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Provider.of<TaskService>(context, listen: false).delete(taskId);
+                Navigator.pop(dialogContext);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => TaskListPage()),
+                );
+              },
+              child: const Text("Delete", style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -80,12 +111,39 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
               ),
             ),
             
-            Center(
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Back'),
+            SizedBox(
+              width: double.infinity, 
+              child: 
+                Center(
+                  child: 
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                            
+                        ElevatedButton(
+                          child: const Text('Edit'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => TaskFormPage(task: widget.task)),
+                            );
+                          },
+                        ),
+                        ElevatedButton(
+                          child: const Text('Delete'),
+                          onPressed: () {
+                            _confirmDelete(context, widget.task.id);
+                          },
+                        ),
+                        ElevatedButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Back'),
+                        ),
+
+                    ],
+                  ),
+                )
               ),
-            ),
           ],
         ),
       ),
