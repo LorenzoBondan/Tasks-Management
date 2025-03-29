@@ -86,6 +86,9 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
             Text(widget.task.description, style: const TextStyle(fontSize: 14)),
             const SizedBox(height: 10),
 
+            Text('Priority: ${widget.task.priority.name}', style: const TextStyle(fontSize: 14)),
+            const SizedBox(height: 10),
+
             Row(
               children: [
                 Text('Completed: ', style: const TextStyle(fontSize: 14)),
