@@ -15,6 +15,7 @@ class _TaskListPageState extends State<TaskListPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   String? _selectedPriority;
+  String? _selectedIsCompleted;
 
   void _refreshTasks() {
     setState(() {});
@@ -49,6 +50,7 @@ class _TaskListPageState extends State<TaskListPage> {
     setState(() {
       _searchQuery = '';
       _selectedPriority = null;
+      _selectedIsCompleted = null;
       _searchController.clear();
     });
   }
@@ -61,9 +63,11 @@ class _TaskListPageState extends State<TaskListPage> {
       .where((task) {
         bool matchesSearchQuery = task.title.toLowerCase().contains(_searchQuery.toLowerCase());
 
-        bool matchesPriority = _selectedPriority == null || task.priority.name == _selectedPriority;
+        bool matchesPriority = _selectedPriority == null || task.priority.name.toLowerCase() == _selectedPriority.toString().toLowerCase();
 
-        return matchesSearchQuery && matchesPriority;
+        bool matchesIsCompleted = _selectedIsCompleted == null || task.isCompleted.toString().toLowerCase() == _selectedIsCompleted.toString().toLowerCase();
+
+        return matchesSearchQuery && matchesPriority && matchesIsCompleted;
       })
       .toList();
 
@@ -103,9 +107,9 @@ class _TaskListPageState extends State<TaskListPage> {
                   value: _selectedPriority,
                   isExpanded: true, 
                   items: [
-                    'low',
-                    'normal',
-                    'high',
+                    'Low',
+                    'Normal',
+                    'High',
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -115,6 +119,37 @@ class _TaskListPageState extends State<TaskListPage> {
                   onChanged: (newValue) {
                     setState(() {
                       _selectedPriority = newValue;
+                    });
+                  },
+                ),
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                border: Border.all(color: Colors.grey, width: 1),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: DropdownButton<String>(
+                  hint: const Text("Select Is Completed"),
+                  value: _selectedIsCompleted,
+                  isExpanded: true, 
+                  items: [
+                    'True', 'False',
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedIsCompleted = newValue;
                     });
                   },
                 ),
